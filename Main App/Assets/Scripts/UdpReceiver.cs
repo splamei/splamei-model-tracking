@@ -37,6 +37,7 @@ public class UdpReceiver : MonoBehaviour
     private JointPacket latestPacket;
     private JointPacket smoothedPacket;
     private bool hadData;
+    public bool hadValidData = false;
 
     void Awake()
     {
@@ -205,6 +206,8 @@ public class UdpReceiver : MonoBehaviour
 
         target.footLeft = Lerp(target.footLeft, input.footLeft, t);
         target.footRight = Lerp(target.footRight, input.footRight, t);
+
+        hadValidData = true;
     }
 
     private Vec3 Lerp(Vec3 a, Vec3 b, float t)

@@ -89,6 +89,11 @@ public class ModelPointMapper : MonoBehaviour
             return;
         }
 
+        if (!udpReceiver.hadValidData)
+        {
+            return;
+        }
+
         var p = udpReceiver.getLatest();
 
         latency = (float)Math.Round((TimeSpan.FromTicks(DateTime.UtcNow.Ticks) - TimeSpan.FromTicks(p.timestampG)).TotalMilliseconds, 2);
