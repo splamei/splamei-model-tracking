@@ -153,6 +153,12 @@ public class UdpReceiver : MonoBehaviour
         if (input.version != 1.0f || input.type != "Full")
         {
             Debug.LogError($"[UdpReceiver] Unable to use a bridge because it's sending version '{input.version}' and type '{input.type}'!");
+            return;
+        }
+        else if (!input.supportedJoints.hand)
+        {
+            Debug.LogError($"[UdpReceiver] Unable to use a bridge because it doesn't support hand trackers!");
+            return;
         }
 
         target.version = input.version;
@@ -243,6 +249,8 @@ public class UdpReceiver : MonoBehaviour
 
         // ---
 
+        public SupportedJoints supportedJoints;
+
         public Vec3 head;
         public Vec3 neck;
         public Vec3 spineBase;
@@ -284,5 +292,19 @@ public class UdpReceiver : MonoBehaviour
         public float xR;
         public float yR;
         public float zR;
+    }
+
+    [Serializable]
+    public struct SupportedJoints
+    {
+        public bool headAndNeck;
+        public bool spine;
+
+        public bool elbow;
+        public bool wrist;
+        public bool hand;
+
+        public bool knee;
+        public bool foot;
     }
 }
