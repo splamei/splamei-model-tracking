@@ -278,5 +278,11 @@ public class UdpReceiver : MonoBehaviour
         public float x;
         public float y;
         public float z;
+
+        public bool hasRotationalData;
+
+        public float xR;
+        public float yR;
+        public float zR;
     }
 }
