@@ -15,13 +15,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class ModelPointMapper : MonoBehaviour
 {
     public UdpReceiver udpReceiver;
     public GameObject modelRoot;
+    public Animator modelAni;
 
     private Vector3 rootOffset;
     private Quaternion lastTargetRotation;

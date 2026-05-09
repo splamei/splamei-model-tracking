@@ -149,6 +149,7 @@ public class AviModelImporterSpawner : MonoBehaviour
                 var obj = currentInstance.AddComponent<ModelAvatarDriver>();
                 obj.modelPointMapper = modelPointMapper;
                 modelPointMapper.modelRoot = currentInstance;
+                modelPointMapper.modelAni = animator;
             }
 
             Debug.Log("[AviModelImporterSpawner] Swapped to the new model!");
