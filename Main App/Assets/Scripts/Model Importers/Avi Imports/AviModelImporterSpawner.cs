@@ -32,7 +32,7 @@ public class AviModelImporterSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        triggerModelSwap();
+        triggerModelSwap(true);
     }
 
     // Update is called once per frame
@@ -41,15 +41,15 @@ public class AviModelImporterSpawner : MonoBehaviour
     //    
     //}
 
-    public void triggerModelSwap()
+    public void triggerModelSwap(bool assignAnimators)
     {
         if (!isLoading)
         {
-            StartCoroutine(loadModelAndSwap());
+            StartCoroutine(loadModelAndSwap(assignAnimators));
         }
     }
 
-    IEnumerator loadModelAndSwap()
+    IEnumerator loadModelAndSwap(bool assignAnimators)
     {
         var extensions = new [] {
             new ExtensionFilter("Splamei Model Tracking Avatar File", "splameimodeltrackavi")
@@ -138,15 +138,18 @@ public class AviModelImporterSpawner : MonoBehaviour
             currentInstance.transform.SetParent(avatarRoot.transform, false);
             currentInstance.transform.localPosition = Vector3.zero;
 
-            var animator = currentInstance.GetComponent<Animator>();
-            if (animator != null)
+            if (assignAnimators)
             {
-                animator.runtimeAnimatorController = animatorController;
-            }
+                var animator = currentInstance.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.runtimeAnimatorController = animatorController;
+                }
 
-            var obj = currentInstance.AddComponent<ModelAvatarDriver>();
-            obj.modelPointMapper = modelPointMapper;
-            modelPointMapper.modelRoot = currentInstance;
+                var obj = currentInstance.AddComponent<ModelAvatarDriver>();
+                obj.modelPointMapper = modelPointMapper;
+                modelPointMapper.modelRoot = currentInstance;
+            }
 
             Debug.Log("[AviModelImporterSpawner] Swapped to the new model!");
         }
