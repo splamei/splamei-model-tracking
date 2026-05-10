@@ -32,6 +32,9 @@ public class DebugStatsManager : MonoBehaviour
     public float averageLatency = 0;
     public int averageLatencyCount = 0;
 
+    public float calibratedTimer = 0;
+    public bool currentlyCalibrating = false;
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -67,5 +70,26 @@ public class DebugStatsManager : MonoBehaviour
             modelPointMapper.reBaseCalibrate();
             calibratedToggle.isOn = true;
         }
+
+        if (currentlyCalibrating)
+        {
+            calibratedTimer += Time.deltaTime;
+            if (calibratedTimer > 5)
+            {
+                currentlyCalibrating = false;
+                calibratedTimer = 0;
+
+                modelPointMapper.endCalibration();
+            }
+        }
+    }
+
+    public void calibrate()
+    {
+        modelPointMapper.reBaseCalibrate();
+        modelPointMapper.beginCalibration();
+
+        calibratedTimer = 0;
+        currentlyCalibrating = true;
     }
 }

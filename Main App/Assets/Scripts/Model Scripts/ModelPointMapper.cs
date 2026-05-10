@@ -20,16 +20,21 @@ using UnityEngine;
 public class ModelPointMapper : MonoBehaviour
 {
     public UdpReceiver udpReceiver;
+    public AviModelImporterSpawner modelImporterSpawner;
     public GameObject modelRoot;
     public Animator modelAni;
 
     private Vector3 rootOffset;
     private Quaternion lastTargetRotation;
     private bool calibrated = false;
+    private bool currentlyCalibrating = false;
 
     public float scale = 1.0f;
     public float headOffset = 0.15f;
     public float smoothSpeed = 10.0f;
+
+    private Vector3 trackerAnchor;
+    private Vector3 unityAnchor;
 
     public float latency = 0;
     public int bridgeFrame;
@@ -48,6 +53,16 @@ public class ModelPointMapper : MonoBehaviour
     public GameObject kneeL, kneeR;
     public GameObject ankleL, ankleR;
     public GameObject footL, footR;
+
+    public Vector3 headOffset2, neckOffset, spineOffset;
+    public Vector3 shoulderLOffset, shoulderROffset;
+    public Vector3 elbowLOffset, elbowROffset;
+    public Vector3 wristLOffset, wristROffset;
+    public Vector3 handLOffset, handROffset;
+    public Vector3 hipLOffset, hipROffset;
+    public Vector3 kneeLOffset, kneeROffset;
+    public Vector3 ankleLOffset, ankleROffset;
+    public Vector3 footLOffset, footROffset;
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +100,11 @@ public class ModelPointMapper : MonoBehaviour
     void Update()
     {
         if (udpReceiver == null || !udpReceiver.hasData() || modelRoot == null)
+        {
+            return;
+        }
+
+        if (currentlyCalibrating)
         {
             return;
         }
@@ -133,32 +153,32 @@ public class ModelPointMapper : MonoBehaviour
         );
 
         //setSpherePos(head, p.head, rootOffset);
-        setSpherePos(neck, p.neck, rootOffset);
-        setSpherePos(spine, p.spineBase, rootOffset);
+        setSpherePos(neck, p.neck, neckOffset);
+        setSpherePos(spine, p.spineBase, spineOffset);
 
-        setSpherePos(shoulderL, p.shoulderLeft, rootOffset);
-        setSpherePos(shoulderR, p.shoulderRight, rootOffset);
+        setSpherePos(shoulderL, p.shoulderLeft, shoulderLOffset);
+        setSpherePos(shoulderR, p.shoulderRight, shoulderROffset);
 
-        setSpherePos(elbowL, p.elbowLeft, rootOffset);
-        setSpherePos(elbowR, p.elbowRight, rootOffset);
+        setSpherePos(elbowL, p.elbowLeft, elbowLOffset);
+        setSpherePos(elbowR, p.elbowRight, elbowROffset);
 
-        setSpherePos(wristL, p.wristLeft, rootOffset);
-        setSpherePos(wristR, p.wristRight, rootOffset);
+        setSpherePos(wristL, p.wristLeft, wristLOffset);
+        setSpherePos(wristR, p.wristRight, wristROffset);
 
-        setSpherePos(handL, p.handLeft, rootOffset);
-        setSpherePos(handR, p.handRight, rootOffset);
+        setSpherePos(handL, p.handLeft, handLOffset);
+        setSpherePos(handR, p.handRight, handROffset);
 
-        setSpherePos(hipL, p.hipLeft, rootOffset);
-        setSpherePos(hipR, p.hipRight, rootOffset);
+        setSpherePos(hipL, p.hipLeft, hipLOffset);
+        setSpherePos(hipR, p.hipRight, hipROffset);
 
-        setSpherePos(kneeL, p.kneeLeft, rootOffset);
-        setSpherePos(kneeR, p.kneeRight, rootOffset);
+        setSpherePos(kneeL, p.kneeLeft, kneeLOffset);
+        setSpherePos(kneeR, p.kneeRight, kneeROffset);
 
-        setSpherePos(ankleL, p.ankleLeft, rootOffset);
-        setSpherePos(ankleR, p.ankleRight, rootOffset);
+        setSpherePos(ankleL, p.ankleLeft, ankleLOffset);
+        setSpherePos(ankleR, p.ankleRight, ankleROffset);
 
-        setSpherePos(footL, p.ankleLeft, rootOffset);
-        setSpherePos(footR, p.ankleRight, rootOffset);
+        setSpherePos(footL, p.ankleLeft, footLOffset);
+        setSpherePos(footR, p.ankleRight, footROffset);
         footL.transform.rotation = Quaternion.Euler(0, 180, 0);
         footR.transform.rotation = Quaternion.Euler(0, 180, 0);
 
@@ -231,9 +251,173 @@ public class ModelPointMapper : MonoBehaviour
         return new Vector3(v.x, v.y, -v.z) * scale;
     }
 
+    private Vector3 toUnityPosNoScale(UdpReceiver.Vec3 v)
+    {
+        return new Vector3(v.x, v.y, -v.z);
+    }
+
     public void reBaseCalibrate()
     {
         calibrated = false;
         rootOffset = Vector3.zero;
+    }
+
+    public void beginCalibration()
+    {
+        currentlyCalibrating = true;
+        modelImporterSpawner.triggerModelSwap(false);
+    }
+
+    public void endCalibration()
+    {
+        currentlyCalibrating = false;
+        scale = 1;
+
+        var p = udpReceiver.getLatest();
+
+        modelRoot.transform.rotation = Quaternion.identity;
+        modelRoot.transform.position = (toUnityPosNoScale(p.ankleLeft) + toUnityPosNoScale(p.ankleRight)) / 2f;
+
+        float trackerShoulderY = (toUnityPosNoScale(p.shoulderLeft).y + toUnityPosNoScale(p.shoulderRight).y) / 2f;
+        float trackerFootY = (toUnityPosNoScale(p.ankleLeft).y + toUnityPosNoScale(p.ankleRight).y) / 2f;
+        float trackerHeight = trackerShoulderY - trackerFootY;
+
+        float modelShoulderY = (getModelBonePos(HumanBodyBones.LeftUpperArm).y + getModelBonePos(HumanBodyBones.RightUpperArm).y) / 2f;
+        float modelFootY = (getModelBonePos(HumanBodyBones.LeftFoot).y + getModelBonePos(HumanBodyBones.RightFoot).y) / 2f;
+        float modelHeight = modelShoulderY - modelFootY;
+
+        scale = (modelHeight / trackerHeight) + 0.2f;
+
+        trackerAnchor = new Vector3(
+            (toUnityPosNoScale(p.ankleLeft).x + toUnityPosNoScale(p.ankleRight).x) / 2f,
+            trackerFootY,
+            (toUnityPosNoScale(p.ankleLeft).z + toUnityPosNoScale(p.ankleRight).z) / 2f
+        );
+
+        unityAnchor = new Vector3(
+            (getModelBonePos(HumanBodyBones.LeftFoot).x + getModelBonePos(HumanBodyBones.RightFoot).x) / 2f,
+            modelFootY,
+            (getModelBonePos(HumanBodyBones.LeftFoot).z + getModelBonePos(HumanBodyBones.RightFoot).z) / 2f
+        );
+
+        if (p.supportedJoints.headAndNeck)
+        {
+            Vector3 trackerHead = toUnityPosNoScale(p.head);
+            Vector3 modelHead = getModelBonePos(HumanBodyBones.Head);
+            headOffset2 = (trackerHead - modelHead) + rootOffset;
+
+            Vector3 trackerNeck = toUnityPosNoScale(p.neck);
+            Vector3 modelNeck = getModelBonePos(HumanBodyBones.Neck);
+            neckOffset = (trackerNeck - modelNeck) + rootOffset;
+        }
+
+        if (p.supportedJoints.spine)
+        {
+            Vector3 trackerSpine = toUnityPosNoScale(p.spineBase);
+            Vector3 modelSpine = getModelBonePos(HumanBodyBones.Spine);
+
+            spineOffset = (trackerSpine - modelSpine) + rootOffset;
+        }
+
+        Vector3 trackerShoulderL = toUnityPosNoScale(p.shoulderLeft);
+        Vector3 trackerShoulderR = toUnityPosNoScale(p.shoulderRight);
+
+        Vector3 modelShoulderL = getModelBonePos(HumanBodyBones.LeftUpperArm);
+        Vector3 modelShoulderR = getModelBonePos(HumanBodyBones.RightUpperArm);
+
+        shoulderLOffset = (trackerShoulderL - modelShoulderL) + rootOffset;
+        shoulderROffset = (trackerShoulderR - modelShoulderR) + rootOffset;
+
+        if (p.supportedJoints.elbow)
+        {
+            Vector3 trackerElbowL = toUnityPosNoScale(p.elbowLeft);
+            Vector3 trackerElbowR = toUnityPosNoScale(p.elbowRight);
+
+            Vector3 modelElbowL = getModelBonePos(HumanBodyBones.LeftLowerArm);
+            Vector3 modelElbowR = getModelBonePos(HumanBodyBones.RightLowerArm);
+
+            elbowLOffset = (trackerElbowL - modelElbowL) + rootOffset;
+            elbowROffset = (trackerElbowR - modelElbowR) + rootOffset;
+        }
+
+        if (p.supportedJoints.wrist)
+        {
+            Vector3 trackerWristL = toUnityPosNoScale(p.wristLeft);
+            Vector3 trackerWristR = toUnityPosNoScale(p.wristRight);
+
+            Vector3 modelWristL = getModelBonePos(HumanBodyBones.LeftHand);
+            Vector3 modelWristR = getModelBonePos(HumanBodyBones.RightHand);
+
+            wristLOffset = (trackerWristL - modelWristL) + rootOffset;
+            wristROffset = (trackerWristR - modelWristR) + rootOffset;
+        }
+
+        Vector3 trackerHandL = toUnityPosNoScale(p.handLeft);
+        Vector3 trackerHandR = toUnityPosNoScale(p.handRight);
+
+        Vector3 modelHandL = getModelBonePos(HumanBodyBones.LeftHand);
+        Vector3 modelHandR = getModelBonePos(HumanBodyBones.RightHand);
+
+        Debug.Log("Model Hand L: " + modelHandL);
+        Debug.Log("Tracker Hand L: " + trackerHandL);
+
+        handLOffset = (trackerHandL - modelHandL) + rootOffset;
+        Debug.Log("Hand L Offset: " + handLOffset);
+
+        handROffset = (trackerHandR - modelHandR) + rootOffset;
+
+        // hip cause it's required
+
+        Vector3 trackerHipL = toUnityPosNoScale(p.hipLeft);
+        Vector3 trackerHipR = toUnityPosNoScale(p.hipRight);
+
+        Vector3 modelHipL = getModelBonePos(HumanBodyBones.LeftUpperLeg);
+        Vector3 modelHipR = getModelBonePos(HumanBodyBones.RightUpperLeg);
+
+        hipLOffset = (trackerHipL - modelHipL) + rootOffset;
+        hipROffset = (trackerHipR - modelHipR) + rootOffset;
+
+        if (p.supportedJoints.knee)
+        {
+            Vector3 trackerKneeL = toUnityPosNoScale(p.kneeLeft);
+            Vector3 trackerKneeR = toUnityPosNoScale(p.kneeRight);
+
+            Vector3 modelKneeL = getModelBonePos(HumanBodyBones.LeftLowerLeg);
+            Vector3 modelKneeR = getModelBonePos(HumanBodyBones.RightLowerLeg);
+
+            kneeLOffset = (trackerKneeL - modelKneeL) + rootOffset;
+            kneeROffset = (trackerKneeR - modelKneeR) + rootOffset;
+        }
+
+        // ankle cause it's also required
+
+        Vector3 trackerAnkleL = toUnityPosNoScale(p.ankleLeft);
+        Vector3 trackerAnkleR = toUnityPosNoScale(p.ankleRight);
+
+        Vector3 modelAnkleL = getModelBonePos(HumanBodyBones.LeftFoot);
+        Vector3 modelAnkleR = getModelBonePos(HumanBodyBones.RightFoot);
+
+        ankleLOffset = (trackerAnkleL - modelAnkleL) + rootOffset;
+        ankleROffset = (trackerAnkleR - modelAnkleR) + rootOffset;
+
+        if (p.supportedJoints.foot)
+        {
+            Vector3 trackerFootL = toUnityPosNoScale(p.footLeft);
+            Vector3 trackerFootR = toUnityPosNoScale(p.footRight);
+
+            Vector3 modelFootL = getModelBonePos(HumanBodyBones.LeftFoot);
+            Vector3 modelFootR = getModelBonePos(HumanBodyBones.RightFoot);
+
+            footLOffset = (trackerFootL - modelFootL) + rootOffset;
+            footROffset = (trackerFootR - modelFootR) + rootOffset;
+        }
+
+        modelImporterSpawner.triggerModelSwap(true);
+    }
+
+    private Vector3 getModelBonePos(HumanBodyBones bone)
+    {
+        Vector3 ogPos =  modelAni.GetBoneTransform(bone).position;
+        return new Vector3(ogPos.x, ogPos.y, ogPos.z);
     }
 }

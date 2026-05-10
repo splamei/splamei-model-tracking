@@ -138,9 +138,10 @@ public class AviModelImporterSpawner : MonoBehaviour
             currentInstance.transform.SetParent(avatarRoot.transform, false);
             currentInstance.transform.localPosition = Vector3.zero;
 
+            var animator = currentInstance.GetComponent<Animator>();
+
             if (assignAnimators)
             {
-                var animator = currentInstance.GetComponent<Animator>();
                 if (animator != null)
                 {
                     animator.runtimeAnimatorController = animatorController;
@@ -148,9 +149,10 @@ public class AviModelImporterSpawner : MonoBehaviour
 
                 var obj = currentInstance.AddComponent<ModelAvatarDriver>();
                 obj.modelPointMapper = modelPointMapper;
-                modelPointMapper.modelRoot = currentInstance;
-                modelPointMapper.modelAni = animator;
             }
+
+            modelPointMapper.modelRoot = currentInstance;
+            modelPointMapper.modelAni = animator;
 
             Debug.Log("[AviModelImporterSpawner] Swapped to the new model!");
         }
