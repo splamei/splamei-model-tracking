@@ -265,7 +265,7 @@ public class ModelPointMapper : MonoBehaviour
     public void beginCalibration()
     {
         currentlyCalibrating = true;
-        modelImporterSpawner.triggerModelSwap(false);
+        modelImporterSpawner.triggerModelSwap(false, false);
     }
 
     public void endCalibration()
@@ -412,7 +412,7 @@ public class ModelPointMapper : MonoBehaviour
             footROffset = (trackerFootR - modelFootR) + rootOffset;
         }
 
-        modelImporterSpawner.triggerModelSwap(true);
+        modelImporterSpawner.triggerModelSwap(true, false);
     }
 
     private Vector3 getModelBonePos(HumanBodyBones bone)

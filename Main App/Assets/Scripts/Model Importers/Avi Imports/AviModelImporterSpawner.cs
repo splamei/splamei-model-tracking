@@ -29,10 +29,12 @@ public class AviModelImporterSpawner : MonoBehaviour
 
     private bool isLoading = false;
 
+    private string locationOfLastModel = "";
+
     // Start is called before the first frame update
     void Start()
     {
-        triggerModelSwap(true);
+        triggerModelSwap(true, true);
     }
 
     // Update is called once per frame
@@ -41,24 +43,36 @@ public class AviModelImporterSpawner : MonoBehaviour
     //    
     //}
 
-    public void triggerModelSwap(bool assignAnimators)
+    public void triggerModelSwap(bool assignAnimators, bool selectNewModel)
     {
         if (!isLoading)
         {
-            StartCoroutine(loadModelAndSwap(assignAnimators));
+            StartCoroutine(loadModelAndSwap(assignAnimators, selectNewModel));
         }
     }
 
-    IEnumerator loadModelAndSwap(bool assignAnimators)
+    IEnumerator loadModelAndSwap(bool assignAnimators, bool selectNewModel)
     {
-        var extensions = new [] {
-            new ExtensionFilter("Splamei Model Tracking Avatar File", "splameimodeltrackavi")
-        };
-        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, false);
+        string path = "";
 
-        if (paths.Length != 1)
+        if (selectNewModel)
         {
-            yield break;
+            var extensions = new [] {
+                new ExtensionFilter("Splamei Model Tracking Avatar File", "splameimodeltrackavi")
+            };
+            var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, false);
+
+            if (paths.Length != 1)
+            {
+                yield break;
+            }
+
+            path = paths[0];
+            locationOfLastModel = path;
+        }
+        else
+        {
+            path = locationOfLastModel;
         }
 
         isLoading = true;
@@ -77,7 +91,7 @@ public class AviModelImporterSpawner : MonoBehaviour
         try
         {
             tempDir = Path.Combine(Application.temporaryCachePath, "extractedAvatar");
-            string filePath = Path.Combine(Application.streamingAssetsPath, paths[0]);
+            string filePath = Path.Combine(Application.streamingAssetsPath, path);
 
             if (Directory.Exists(tempDir)) { Directory.Delete(tempDir, true); }
             Directory.CreateDirectory(tempDir);
