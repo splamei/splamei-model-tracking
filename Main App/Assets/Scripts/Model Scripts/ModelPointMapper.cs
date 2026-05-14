@@ -33,8 +33,8 @@ public class ModelPointMapper : MonoBehaviour
     public float headOffset = 0.15f;
     public float smoothSpeed = 10.0f;
 
-    private Vector3 trackerAnchor;
-    private Vector3 unityAnchor;
+    public Vector3 trackerAnchor;
+    public Vector3 unityAnchor;
 
     public float latency = 0;
     public int bridgeFrame;
@@ -53,16 +53,6 @@ public class ModelPointMapper : MonoBehaviour
     public GameObject kneeL, kneeR;
     public GameObject ankleL, ankleR;
     public GameObject footL, footR;
-
-    public Vector3 headOffset2, neckOffset, spineOffset;
-    public Vector3 shoulderLOffset, shoulderROffset;
-    public Vector3 elbowLOffset, elbowROffset;
-    public Vector3 wristLOffset, wristROffset;
-    public Vector3 handLOffset, handROffset;
-    public Vector3 hipLOffset, hipROffset;
-    public Vector3 kneeLOffset, kneeROffset;
-    public Vector3 ankleLOffset, ankleROffset;
-    public Vector3 footLOffset, footROffset;
 
     // Start is called before the first frame update
     void Start()
@@ -153,32 +143,32 @@ public class ModelPointMapper : MonoBehaviour
         );
 
         //setSpherePos(head, p.head, rootOffset);
-        setSpherePos(neck, p.neck, neckOffset);
-        setSpherePos(spine, p.spineBase, spineOffset);
+        setSpherePos(neck, p.neck, rootOffset);
+        setSpherePos(spine, p.spineBase, rootOffset);
 
-        setSpherePos(shoulderL, p.shoulderLeft, shoulderLOffset);
-        setSpherePos(shoulderR, p.shoulderRight, shoulderROffset);
+        setSpherePos(shoulderL, p.shoulderLeft, rootOffset);
+        setSpherePos(shoulderR, p.shoulderRight, rootOffset);
 
-        setSpherePos(elbowL, p.elbowLeft, elbowLOffset);
-        setSpherePos(elbowR, p.elbowRight, elbowROffset);
+        setSpherePos(elbowL, p.elbowLeft, rootOffset);
+        setSpherePos(elbowR, p.elbowRight, rootOffset);
 
-        setSpherePos(wristL, p.wristLeft, wristLOffset);
-        setSpherePos(wristR, p.wristRight, wristROffset);
+        setSpherePos(wristL, p.wristLeft, rootOffset);
+        setSpherePos(wristR, p.wristRight, rootOffset);
 
-        setSpherePos(handL, p.handLeft, handLOffset);
-        setSpherePos(handR, p.handRight, handROffset);
+        setSpherePos(handL, p.handLeft, rootOffset);
+        setSpherePos(handR, p.handRight, rootOffset);
 
-        setSpherePos(hipL, p.hipLeft, hipLOffset);
-        setSpherePos(hipR, p.hipRight, hipROffset);
+        setSpherePos(hipL, p.hipLeft, rootOffset);
+        setSpherePos(hipR, p.hipRight, rootOffset);
 
-        setSpherePos(kneeL, p.kneeLeft, kneeLOffset);
-        setSpherePos(kneeR, p.kneeRight, kneeROffset);
+        setSpherePos(kneeL, p.kneeLeft, rootOffset);
+        setSpherePos(kneeR, p.kneeRight, rootOffset);
 
-        setSpherePos(ankleL, p.ankleLeft, ankleLOffset);
-        setSpherePos(ankleR, p.ankleRight, ankleROffset);
+        setSpherePos(ankleL, p.ankleLeft, rootOffset);
+        setSpherePos(ankleR, p.ankleRight, rootOffset);
 
-        setSpherePos(footL, p.ankleLeft, footLOffset);
-        setSpherePos(footR, p.ankleRight, footROffset);
+        setSpherePos(footL, p.ankleLeft, rootOffset);
+        setSpherePos(footR, p.ankleRight, rootOffset);
         footL.transform.rotation = Quaternion.Euler(0, 180, 0);
         footR.transform.rotation = Quaternion.Euler(0, 180, 0);
 
@@ -300,7 +290,7 @@ public class ModelPointMapper : MonoBehaviour
             (getModelBonePos(HumanBodyBones.LeftFoot).z + getModelBonePos(HumanBodyBones.RightFoot).z) / 2f
         );
 
-        if (p.supportedJoints.headAndNeck)
+        /**if (p.supportedJoints.headAndNeck)
         {
             Vector3 trackerHead = toUnityPosNoScale(p.head);
             Vector3 modelHead = getModelBonePos(HumanBodyBones.Head);
@@ -410,7 +400,7 @@ public class ModelPointMapper : MonoBehaviour
 
             footLOffset = (trackerFootL - modelFootL) + rootOffset;
             footROffset = (trackerFootR - modelFootR) + rootOffset;
-        }
+        }**/
 
         modelImporterSpawner.triggerModelSwap(true, false);
     }
