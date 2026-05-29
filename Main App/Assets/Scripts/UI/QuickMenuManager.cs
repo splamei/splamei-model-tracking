@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class QuickMenuManager : MonoBehaviour
 {
+    public NotifyManager notifyManager;
+
     public Animation quickMenuAnimation;
     public AnimationClip quickMenuShow;
     public AnimationClip quickMenuHide;
@@ -88,6 +90,11 @@ public class QuickMenuManager : MonoBehaviour
     public void selectNewModel()
     {
         modelImporterSpawner.triggerModelSwap(true, true);
+    }
+
+    public void showNotImplemented()
+    {
+        notifyManager.show(null, "Not implemented!", "This quick menu option hasn't been implemented yet! Please wait while we implement everything for the app.\n\nWe're sorry for any issues this may cause", "OK", "");
     }
 
 #endregion

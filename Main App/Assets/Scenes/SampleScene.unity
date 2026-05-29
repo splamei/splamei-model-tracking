@@ -1179,6 +1179,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1845209097}
+        m_TargetAssemblyTypeName: QuickMenuManager, Assembly-CSharp
+        m_MethodName: showNotImplemented
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &596532645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1514,6 +1526,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1845209097}
         m_TargetAssemblyTypeName: QuickMenuManager, Assembly-CSharp
         m_MethodName: hideQuickMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1845209097}
+        m_TargetAssemblyTypeName: QuickMenuManager, Assembly-CSharp
+        m_MethodName: showNotImplemented
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3763,6 +3787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1921b3d20fec1ae43aaa87f9039042c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notifyManager: {fileID: 244808075}
   quickMenuAnimation: {fileID: 410847864}
   quickMenuShow: {fileID: 7400000, guid: 2282eb9d4c6d0e7478d65f9c0461d8a0, type: 2}
   quickMenuHide: {fileID: 7400000, guid: ddffc0a29c1607a42ac1c47536f3dc27, type: 2}
@@ -3999,6 +4024,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1845209097}
         m_TargetAssemblyTypeName: QuickMenuManager, Assembly-CSharp
         m_MethodName: hideQuickMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1845209097}
+        m_TargetAssemblyTypeName: QuickMenuManager, Assembly-CSharp
+        m_MethodName: showNotImplemented
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

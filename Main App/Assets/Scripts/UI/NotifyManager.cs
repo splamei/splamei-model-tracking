@@ -37,9 +37,7 @@ public class NotifyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        show(null, "title1", "text", "button1", "button2");
-        show(null, "title2", "text", "button1", "button2");
-        show(null, "title3", "text", "button1", "button2");
+        
     }
 
     // Update is called once per frame
