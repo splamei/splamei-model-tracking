@@ -18,6 +18,9 @@ public class QuickMenuManager : MonoBehaviour
 
     private float clickTimer = 0;
 
+    [Header("Menu option Refs")]
+    public AviModelImporterSpawner modelImporterSpawner;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,4 +82,13 @@ public class QuickMenuManager : MonoBehaviour
             clickTimer = 0.2f;
         }
     }
+
+#region Menu functions
+
+    public void selectNewModel()
+    {
+        modelImporterSpawner.triggerModelSwap(true, true);
+    }
+
+#endregion
 }
