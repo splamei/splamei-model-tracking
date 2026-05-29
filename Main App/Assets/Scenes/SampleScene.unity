@@ -740,6 +740,8 @@ MonoBehaviour:
   scale: 1
   headOffset: 0.15
   smoothSpeed: 10
+  trackerAnchor: {x: 0, y: 0, z: 0}
+  unityAnchor: {x: 0, y: 0, z: 0}
   latency: 0
   bridgeFrame: 0
   bridgeName: 
@@ -763,25 +765,6 @@ MonoBehaviour:
   ankleR: {fileID: 0}
   footL: {fileID: 0}
   footR: {fileID: 0}
-  headOffset2: {x: 0, y: 0, z: 0}
-  neckOffset: {x: 0, y: 0, z: 0}
-  spineOffset: {x: 0, y: 0, z: 0}
-  shoulderLOffset: {x: 0, y: 0, z: 0}
-  shoulderROffset: {x: 0, y: 0, z: 0}
-  elbowLOffset: {x: 0, y: 0, z: 0}
-  elbowROffset: {x: 0, y: 0, z: 0}
-  wristLOffset: {x: 0, y: 0, z: 0}
-  wristROffset: {x: 0, y: 0, z: 0}
-  handLOffset: {x: 0, y: 0, z: 0}
-  handROffset: {x: 0, y: 0, z: 0}
-  hipLOffset: {x: 0, y: 0, z: 0}
-  hipROffset: {x: 0, y: 0, z: 0}
-  kneeLOffset: {x: 0, y: 0, z: 0}
-  kneeROffset: {x: 0, y: 0, z: 0}
-  ankleLOffset: {x: 0, y: 0, z: 0}
-  ankleROffset: {x: 0, y: 0, z: 0}
-  footLOffset: {x: 0, y: 0, z: 0}
-  footROffset: {x: 0, y: 0, z: 0}
 --- !u!1 &941814787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1023,91 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008748355}
+  m_CullTransparentMesh: 1
+--- !u!1 &1010751563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010751564}
+  - component: {fileID: 1010751566}
+  - component: {fileID: 1010751565}
+  m_Layer: 5
+  m_Name: Text (Legacy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1010751564
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010751563}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1846872991}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 273, y: 70}
+  m_SizeDelta: {x: 525, y: 122}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1010751565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010751563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 25
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 55
+    m_Alignment: 6
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Splamei Model Tracking
+
+
+    Version 0.0.0.1
+
+    This is a pre-release
+    version!'
+--- !u!222 &1010751566
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010751563}
   m_CullTransparentMesh: 1
 --- !u!1 &1198592713
 GameObject:
@@ -1416,6 +1484,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1010751564}
   - {fileID: 1008748356}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
