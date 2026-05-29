@@ -16,6 +16,8 @@ public class QuickMenuManager : MonoBehaviour
 
     private bool hidingMenu = false;
 
+    private float clickTimer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,11 @@ public class QuickMenuManager : MonoBehaviour
         {
             hidingMenu = false;
             quickMenuObj.SetActive(false);
+        }
+
+        if (clickTimer > 0)
+        {
+            clickTimer -= Time.deltaTime;
         }
     }
 
@@ -58,5 +65,18 @@ public class QuickMenuManager : MonoBehaviour
         quickMenuAnimation.Play();
 
         hidingMenu = true;
+    }
+
+    public void showQuickMenuButtonPressed()
+    {
+        if (clickTimer > 0)
+        {
+            showQuickMenu();
+            clickTimer = 0;
+        }
+        else
+        {
+            clickTimer = 0.2f;
+        }
     }
 }
