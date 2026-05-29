@@ -35,6 +35,8 @@ public class SaveSystem : MonoBehaviour
     {
         if (SaveManager.fileExists("save.dat"))
         {
+            Debug.Log($"[SaveSystem] Saving the save file");
+
             saveVer = mySaveVer;
             gameVer = Application.version;
 
