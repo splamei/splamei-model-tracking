@@ -54,6 +54,8 @@ public class ModelPointMapper : MonoBehaviour
     public GameObject ankleL, ankleR;
     public GameObject footL, footR;
 
+    public List<GameObject> jointObjects = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -191,6 +193,15 @@ public class ModelPointMapper : MonoBehaviour
     {
         var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         obj.transform.localScale = Vector3.one * 0.15f;
+        
+        MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
+
+        jointObjects.Add(obj);
+
         return obj;
     }
 

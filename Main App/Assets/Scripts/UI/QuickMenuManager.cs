@@ -129,6 +129,15 @@ public class QuickMenuManager : MonoBehaviour
         {
             showingDebugMode = false;
             debugModeObj.SetActive(false);
+
+            foreach (var obj in modelPointMapper.jointObjects)
+            {
+                MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+                if (meshRenderer != null)
+                {
+                    meshRenderer.enabled = false;
+                }
+            }
         }
         else
         {
@@ -140,6 +149,15 @@ public class QuickMenuManager : MonoBehaviour
             {
                 showingDebugMode = true;
                 debugModeObj.SetActive(true);
+
+                foreach (var obj in modelPointMapper.jointObjects)
+                {
+                    MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+                    if (meshRenderer != null)
+                    {
+                        meshRenderer.enabled = true;
+                    }
+                }
             }
         }
     }
