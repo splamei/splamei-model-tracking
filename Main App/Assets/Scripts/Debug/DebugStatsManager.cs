@@ -19,10 +19,9 @@ using UnityEngine.UI;
 
 public class DebugStatsManager : MonoBehaviour
 {
-    public Text display;
+    public Text display1;
+    public Text display2;
     public ModelPointMapper modelPointMapper;
-
-    public Toggle calibratedToggle;
 
     public float updateTimer = 0;
 
@@ -32,8 +31,9 @@ public class DebugStatsManager : MonoBehaviour
     public float averageLatency = 0;
     public int averageLatencyCount = 0;
 
-    public float calibratedTimer = 0;
-    public bool currentlyCalibrating = false;
+    public GameObject latencyMeterObj;
+    public GameObject currentLatancyObj;
+    public GameObject peakLatencyObj;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -61,35 +61,19 @@ public class DebugStatsManager : MonoBehaviour
                 averageLatencyCount++;
             }
 
-            display.text = $"Latency: {modelPointMapper.latency}ms\nPeak latency: {peakLatency}ms (For {Math.Round(peakLatencyTimer, 1)}s)\nAverage latency: {Math.Round(averageLatency, 1)}ms\nBridge Frame: {modelPointMapper.bridgeFrame}\n\nBridge name: {modelPointMapper.bridgeName}\nBridge ID: {modelPointMapper.bridgeId}";
+            display1.text = $"Latency: {modelPointMapper.latency}ms\nAverage latency: {Math.Round(averageLatency, 1)}ms\nPeak latency: {peakLatency}ms (for {Math.Round(peakLatencyTimer, 1)}s)";
+            display2.text = $"Bridge name: {modelPointMapper.bridgeName}\nBridge ID: {modelPointMapper.bridgeId}\nBridge Frame: {modelPointMapper.bridgeFrame}";
             updateTimer = 0;
+
+            float latency2 = modelPointMapper.latency;
+            if (latency2 >= 2000) { latency2 = 2000; }
+            float currentLatencyYPos = (0.17f * latency2) - 340f;
+            currentLatancyObj.transform.localPosition = new Vector3(currentLatancyObj.transform.localPosition.x, currentLatencyYPos, currentLatancyObj.transform.localPosition.z);
+
+            float peakLatency2 = peakLatency;
+            if (peakLatency2 >= 2000) { peakLatency2 = 2000; }
+            float peakLatencyYPos = (0.17f * peakLatency2) - 170f;
+            peakLatencyObj.transform.localPosition = new Vector3(peakLatencyObj.transform.localPosition.x, peakLatencyYPos, peakLatencyObj.transform.localPosition.z);
         }
-
-        if (!calibratedToggle.isOn)
-        {
-            modelPointMapper.reBaseCalibrate();
-            calibratedToggle.isOn = true;
-        }
-
-        if (currentlyCalibrating)
-        {
-            calibratedTimer += Time.deltaTime;
-            if (calibratedTimer > 5)
-            {
-                currentlyCalibrating = false;
-                calibratedTimer = 0;
-
-                modelPointMapper.endCalibration();
-            }
-        }
-    }
-
-    public void calibrate()
-    {
-        modelPointMapper.reBaseCalibrate();
-        modelPointMapper.beginCalibration();
-
-        calibratedTimer = 0;
-        currentlyCalibrating = true;
     }
 }

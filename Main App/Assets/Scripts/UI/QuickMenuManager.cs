@@ -28,6 +28,9 @@ public class QuickMenuManager : MonoBehaviour
     public float calibratedTimer = 0;
     public bool currentlyCalibrating = false;
 
+    public bool showingDebugMode = false;
+    public GameObject debugModeObj;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -118,6 +121,27 @@ public class QuickMenuManager : MonoBehaviour
         calibratedTimer = 0;
         currentlyCalibrating = true;
         calibratingObj.SetActive(true);
+    }
+
+    public void toggleDebugModePressed(int pressed = -1)
+    {
+        if (showingDebugMode)
+        {
+            showingDebugMode = false;
+            debugModeObj.SetActive(false);
+        }
+        else
+        {
+            if (pressed == -1)
+            {
+                notifyManager.show(toggleDebugModePressed, "Enable debug mode?", "Do you want to enable debug mode? This mode shows extra statistics on screen to help you debug issues with your bridge or the app.\n\nUnless something is wrong, you shouldn't enable this mode", "Yes", "No");
+            }
+            else if (pressed == 1)
+            {
+                showingDebugMode = true;
+                debugModeObj.SetActive(true);
+            }
+        }
     }
 
     public void showNotImplemented()
