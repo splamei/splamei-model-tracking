@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class QuickMenuManager : MonoBehaviour
 {
     public NotifyManager notifyManager;
+    public ModelPointMapper modelPointMapper;
 
     public Animation quickMenuAnimation;
     public AnimationClip quickMenuShow;
@@ -22,6 +23,10 @@ public class QuickMenuManager : MonoBehaviour
 
     [Header("Menu option Refs")]
     public AviModelImporterSpawner modelImporterSpawner;
+
+    public GameObject calibratingObj;
+    public float calibratedTimer = 0;
+    public bool currentlyCalibrating = false;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +46,19 @@ public class QuickMenuManager : MonoBehaviour
         if (clickTimer > 0)
         {
             clickTimer -= Time.deltaTime;
+        }
+
+        if (currentlyCalibrating)
+        {
+            calibratedTimer += Time.deltaTime;
+            if (calibratedTimer > 5)
+            {
+                currentlyCalibrating = false;
+                calibratedTimer = 0;
+
+                modelPointMapper.endCalibration();
+                calibratingObj.SetActive(false);
+            }
         }
     }
 
@@ -90,6 +108,16 @@ public class QuickMenuManager : MonoBehaviour
     public void selectNewModel()
     {
         modelImporterSpawner.triggerModelSwap(true, true);
+    }
+
+    public void calibrateModel()
+    {
+        modelPointMapper.reBaseCalibrate();
+        modelPointMapper.beginCalibration();
+
+        calibratedTimer = 0;
+        currentlyCalibrating = true;
+        calibratingObj.SetActive(true);
     }
 
     public void showNotImplemented()
