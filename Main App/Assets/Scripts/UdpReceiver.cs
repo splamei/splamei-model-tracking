@@ -22,6 +22,8 @@ using UnityEngine;
 
 public class UdpReceiver : MonoBehaviour
 {
+    public SaveSystem saveSystem;
+
     [Header("Network config")]
     public int port = 58080;
 
@@ -41,6 +43,8 @@ public class UdpReceiver : MonoBehaviour
 
     void Awake()
     {
+        port = int.Parse(GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.port).ToString());
+
         // probs don't need this but i'm adding it anyway
         Application.runInBackground = true;
     }

@@ -2897,6 +2897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5975d6258b2d6458cd6fa9832f2cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveSystem: {fileID: 170602496}
   port: 58080
   smoothing: 0.25
   hadValidData: 0
@@ -3890,6 +3891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb260b5f6632c643b9afc41574ef0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveSystem: {fileID: 170602496}
   udpReceiver: {fileID: 621960479}
   modelImporterSpawner: {fileID: 1717490931}
   modelRoot: {fileID: 0}

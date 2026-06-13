@@ -19,6 +19,7 @@ using UnityEngine;
 
 public class ModelPointMapper : MonoBehaviour
 {
+    public SaveSystem saveSystem;
     public UdpReceiver udpReceiver;
     public AviModelImporterSpawner modelImporterSpawner;
     public GameObject modelRoot;
@@ -91,6 +92,11 @@ public class ModelPointMapper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!currentlyCalibrating)
+        {
+            scale = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.scale);
+        }
+
         if (udpReceiver == null || !udpReceiver.hasData() || modelRoot == null)
         {
             return;
@@ -209,9 +215,9 @@ public class ModelPointMapper : MonoBehaviour
     {
         if (obj == null) { return; }
 
-        float deadzone = 0.005f;
-        float maxMovement = 0.4f;
-        float smoothTime = 0.05f;
+        float deadzone = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.deadzone);//0.005f;
+        float maxMovement = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.maxMovement);//0.4f;
+        float smoothTime = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing);//0.05f;
 
         Vector3 target = (new Vector3(-v.x, v.y, v.z) + offset) * scale;
 
@@ -288,6 +294,8 @@ public class ModelPointMapper : MonoBehaviour
         float modelHeight = modelShoulderY - modelFootY;
 
         scale = (modelHeight / trackerHeight) + 0.2f;
+        if (scale <= 0.001f || float.IsInfinity(scale) || float.IsNaN(scale)) { scale = 0.001f; }
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.scale, scale);
 
         trackerAnchor = new Vector3(
             (toUnityPosNoScale(p.ankleLeft).x + toUnityPosNoScale(p.ankleRight).x) / 2f,
