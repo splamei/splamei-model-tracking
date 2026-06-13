@@ -67,15 +67,15 @@ public class SettingsManager : MonoBehaviour
 
     void OnDisable()
     {
-        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.scale, float.Parse(modelScaleInput.text));
-        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing, float.Parse(smoothingInput.text));
-        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.deadzone, float.Parse(deadzoneInput.text));
-        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.maxMovement, float.Parse(maxMovementInput.text));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.scale, float.Parse(!string.IsNullOrEmpty(modelScaleInput.text) ? modelScaleInput.text : "0"));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing, float.Parse(!string.IsNullOrEmpty(smoothingInput.text) ? smoothingInput.text : "0"));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.deadzone, float.Parse(!string.IsNullOrEmpty(deadzoneInput.text) ? deadzoneInput.text : "0"));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.maxMovement, float.Parse(!string.IsNullOrEmpty(maxMovementInput.text) ? maxMovementInput.text : "0"));
 
         GlobalData.setSettingsDataBool(saveSystem, GlobalData.settingsData.modelShowOnDisconnect, showModelOnDisconnect.isOn);
         GlobalData.setSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge, getHeadRotationBridge.isOn);
 
-        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.port, float.Parse(portInput.text));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.port, float.Parse(!string.IsNullOrEmpty(portInput.text) ? portInput.text : "0"));
     }
 
     // Update is called once per frame
