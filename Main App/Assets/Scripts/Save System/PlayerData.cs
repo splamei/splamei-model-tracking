@@ -21,9 +21,29 @@ public class PlayerData
     public string gameVer;
     public int saveVer;
 
+    public float modelScale;
+    public float modelSmoothing;
+    public float modelDeadzoneSize;
+    public float modelMaxMovement;
+
+    public bool modelShowOnDisconnect;
+    public bool modelUseBridgeHeadRotation;
+
+    public int port;
+
     public PlayerData (SaveSystem player)
     {
         gameVer = player.gameVer;
         saveVer = player.saveVer;
+
+        modelScale = player.modelScale;
+        modelSmoothing = player.modelSmoothing;
+        modelDeadzoneSize = player.modelDeadzoneSize;
+        modelMaxMovement = player.modelMaxMovement;
+
+        modelShowOnDisconnect = player.modelShowOnDisconnect;
+        modelUseBridgeHeadRotation = player.modelUseBridgeHeadRotation;
+
+        port = player.port;
     }
 }

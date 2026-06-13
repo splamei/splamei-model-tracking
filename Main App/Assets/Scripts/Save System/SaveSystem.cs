@@ -23,6 +23,16 @@ public class SaveSystem : MonoBehaviour
     public string gameVer;
     public int saveVer;
 
+    public float modelScale;
+    public float modelSmoothing;
+    public float modelDeadzoneSize;
+    public float modelMaxMovement;
+
+    public bool modelShowOnDisconnect;
+    public bool modelUseBridgeHeadRotation;
+
+    public int port;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,6 +43,16 @@ public class SaveSystem : MonoBehaviour
 
             gameVer = player.gameVer;
             saveVer = player.saveVer;
+
+            modelScale = player.modelScale;
+            modelSmoothing = player.modelSmoothing;
+            modelDeadzoneSize = player.modelDeadzoneSize;
+            modelMaxMovement = player.modelMaxMovement;
+
+            modelShowOnDisconnect = player.modelShowOnDisconnect;
+            modelUseBridgeHeadRotation = player.modelUseBridgeHeadRotation;
+
+            port = player.port;
 
             if (player.saveVer > mySaveVer)
             {

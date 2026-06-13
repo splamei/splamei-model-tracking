@@ -1,3 +1,18 @@
+/*  Copyright 2026 Splamei
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 using System;
 using System.IO;
 using UnityEngine;
@@ -90,6 +105,130 @@ public static class GlobalData
         }
 
         return fullPath;
+    }
+
+    public enum settingsData
+    {
+        scale = 0,
+        smoothing = 1,
+        deadzone = 2,
+        maxMovement = 3,
+
+        modelShowOnDisconnect = 4,
+        headRotationFromBridge = 5,
+
+        port = 6
+    }
+
+    public static float getSettingsDataFloat(SaveSystem saveSystem, settingsData settingsData)
+    {
+        if (settingsData == settingsData.scale)
+        {
+            if (saveSystem.modelScale == 0)
+            {
+                return 1;
+            }
+
+            return saveSystem.modelScale;
+        }
+
+        else if (settingsData == settingsData.smoothing)
+        {
+            if (saveSystem.modelSmoothing == 0)
+            {
+                return 0.05f;
+            }
+
+            return saveSystem.modelSmoothing;
+        }
+
+        else if (settingsData == settingsData.deadzone)
+        {
+            if (saveSystem.modelDeadzoneSize == 0)
+            {
+                return 0.005f;
+            }
+
+            return saveSystem.modelDeadzoneSize;
+        }
+
+        else if (settingsData == settingsData.maxMovement)
+        {
+            if (saveSystem.modelMaxMovement == 0)
+            {
+                return 0.4f;
+            }
+
+            return saveSystem.modelMaxMovement;
+        }
+
+        else if (settingsData == settingsData.port)
+        {
+            if (saveSystem.port == 0)
+            {
+                return 58080;
+            }
+            
+            return saveSystem.port;
+        }
+
+        return 0;
+    }
+
+    public static bool getSettingsDataBool(SaveSystem saveSystem, settingsData settingsData)
+    {
+        if (settingsData == settingsData.modelShowOnDisconnect)
+        {
+            return saveSystem.modelShowOnDisconnect;
+        }
+
+        else if (settingsData == settingsData.headRotationFromBridge)
+        {
+            return saveSystem.modelUseBridgeHeadRotation;
+        }
+
+        return false;
+    }
+
+    public static void setSettingsDataFloat(SaveSystem saveSystem, settingsData settingsData, float data)
+    {
+        if (settingsData == settingsData.scale)
+        {
+            saveSystem.modelScale = data;
+        }
+
+        else if (settingsData == settingsData.smoothing)
+        {
+            saveSystem.modelSmoothing = data;
+        }
+
+        else if (settingsData == settingsData.deadzone)
+        {
+            saveSystem.modelDeadzoneSize = data;
+        }
+
+        else if (settingsData == settingsData.maxMovement)
+        {
+            saveSystem.modelMaxMovement = data;
+        }
+
+        else if (settingsData == settingsData.port)
+        {
+            saveSystem.port = int.Parse(data.ToString());
+        }
+    }
+
+    public static void setSettingsDataBool(SaveSystem saveSystem, settingsData settingsData, bool data)
+    {
+        if (settingsData == settingsData.modelShowOnDisconnect)
+        {
+            saveSystem.modelShowOnDisconnect = data;
+        }
+
+        else if (settingsData == settingsData.headRotationFromBridge)
+        {
+            saveSystem.modelUseBridgeHeadRotation = data;
+        }
     }
 }
 

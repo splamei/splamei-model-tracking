@@ -14,12 +14,30 @@
  */
  
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
+    public SaveSystem saveSystem;
+    public NotifyManager notify;
+
+    public bool changingValues = false;
+
     public Animation animationObj;
     public AnimationClip showAni;
     public AnimationClip closeAni;
+
+    public InputField modelScaleInput;
+    public InputField smoothingInput;
+    public InputField deadzoneInput;
+    public InputField maxMovementInput;
+
+    public Toggle showModelOnDisconnect;
+    public Toggle getHeadRotationBridge;
+
+    public InputField portInput;
+
+    public Text versionText;
 
     public bool showing = false;
     public bool isClosing = false;
@@ -27,7 +45,37 @@ public class SettingsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        versionText.text = $"Version: {Application.version}";
+    }
+
+    void OnEnable()
+    {
+        changingValues = true;
+
+        modelScaleInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.scale).ToString();
+        smoothingInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing).ToString();
+        deadzoneInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.deadzone).ToString();
+        maxMovementInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.maxMovement).ToString();
+
+        showModelOnDisconnect.isOn = GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.modelShowOnDisconnect);
+        getHeadRotationBridge.isOn = GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge);
+
+        portInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.port).ToString();
+
+        changingValues = false;
+    }
+
+    void OnDisable()
+    {
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.scale, float.Parse(modelScaleInput.text));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing, float.Parse(smoothingInput.text));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.deadzone, float.Parse(deadzoneInput.text));
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.maxMovement, float.Parse(maxMovementInput.text));
+
+        GlobalData.setSettingsDataBool(saveSystem, GlobalData.settingsData.modelShowOnDisconnect, showModelOnDisconnect.isOn);
+        GlobalData.setSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge, getHeadRotationBridge.isOn);
+
+        GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.port, float.Parse(portInput.text));
     }
 
     // Update is called once per frame
@@ -40,6 +88,12 @@ public class SettingsManager : MonoBehaviour
 
             this.gameObject.SetActive(false);
         }
+    }
+
+    public void bridgeHeadRotation()
+    {
+        if (!changingValues && getHeadRotationBridge.isOn)
+        notify.show(null, "Note", "Using the head rotation from any connected bridge apps may not work if the bridge doesn't support head rotations.\n\nUnless you know the bridge supports head rotation, this should stay disabled.", "OK", "");
     }
 
     public void showSettings()
