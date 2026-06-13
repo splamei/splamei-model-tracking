@@ -220,6 +220,7 @@ public class ModelPointMapper : MonoBehaviour
         float smoothTime = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.smoothing);//0.05f;
 
         Vector3 target = (new Vector3(-v.x, v.y, v.z) + offset) * scale;
+        Quaternion quaternion = new Quaternion(v.xR, v.yR, v.zR, 0);
 
         if (!velocities.ContainsKey(obj))
         {
@@ -249,6 +250,7 @@ public class ModelPointMapper : MonoBehaviour
         );
 
         obj.transform.position = smoothed;
+        obj.transform.rotation = quaternion;
 
         velocities[obj] = vel;
     }
@@ -287,13 +289,23 @@ public class ModelPointMapper : MonoBehaviour
 
         float trackerShoulderY = (toUnityPosNoScale(p.shoulderLeft).y + toUnityPosNoScale(p.shoulderRight).y) / 2f;
         float trackerFootY = (toUnityPosNoScale(p.ankleLeft).y + toUnityPosNoScale(p.ankleRight).y) / 2f;
-        float trackerHeight = trackerShoulderY - trackerFootY;
+        float trackerHeadY = toUnityPosNoScale(p.head).y;
+
+        float trackerHeight = 0;
+        if (GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge)) { trackerHeight = trackerHeadY - trackerFootY; }
+        else { trackerHeight = trackerShoulderY - trackerFootY; }
 
         float modelShoulderY = (getModelBonePos(HumanBodyBones.LeftUpperArm).y + getModelBonePos(HumanBodyBones.RightUpperArm).y) / 2f;
         float modelFootY = (getModelBonePos(HumanBodyBones.LeftFoot).y + getModelBonePos(HumanBodyBones.RightFoot).y) / 2f;
-        float modelHeight = modelShoulderY - modelFootY;
+        float modelHeadY = getModelBonePos(HumanBodyBones.Head).y;
 
-        scale = (modelHeight / trackerHeight) + 0.2f;
+        float modelHeight = 0;
+        if (GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge)) { modelHeight = modelHeadY - modelFootY; }
+        else { modelHeight = modelShoulderY - modelFootY; }
+
+        if (GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge)) { scale = modelHeight / trackerHeight; }
+        else { scale = (modelHeight / trackerHeight) + 0.2f; }
+
         if (scale <= 0.001f || float.IsInfinity(scale) || float.IsNaN(scale)) { scale = 0.001f; }
         GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.scale, scale);
 

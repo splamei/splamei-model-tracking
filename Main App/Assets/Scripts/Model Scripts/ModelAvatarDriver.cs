@@ -17,6 +17,7 @@ using UnityEngine;
 
 public class ModelAvatarDriver : MonoBehaviour
 {
+    public SaveSystem saveSystem;
     public ModelPointMapper modelPointMapper;
     private Animator anim;
 
@@ -46,9 +47,16 @@ public class ModelAvatarDriver : MonoBehaviour
         Vector3 right = modelPointMapper.shoulderR.transform.position - modelPointMapper.shoulderL.transform.position;
         Vector3 up = Vector3.Cross(forward, right);
 
-        if (forward.sqrMagnitude > 0.0001f)
+        if (GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge))
         {
-            headBone.rotation = Quaternion.LookRotation(forward, up);
+            headBone.rotation = modelPointMapper.head.transform.rotation;
+        }
+        else
+        {
+            if (forward.sqrMagnitude > 0.0001f)
+            {
+                headBone.rotation = Quaternion.LookRotation(forward, up);
+            }
         }
     }
 

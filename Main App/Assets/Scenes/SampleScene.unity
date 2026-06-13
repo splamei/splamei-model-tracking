@@ -8463,6 +8463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 819f9ca86926aeb488c1117599886290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveSystem: {fileID: 170602496}
   avatarRoot: {fileID: 828460589}
   modelPointMapper: {fileID: 908931852}
   animatorController: {fileID: 9100000, guid: 4e2c2ffe450333e489aa4eeb6446a0e6, type: 2}

@@ -22,6 +22,8 @@ using SFB;
 
 public class AviModelImporterSpawner : MonoBehaviour
 {
+    public SaveSystem saveSystem;
+
     private GameObject currentInstance;
     public GameObject avatarRoot;
     public ModelPointMapper modelPointMapper;
@@ -163,6 +165,7 @@ public class AviModelImporterSpawner : MonoBehaviour
 
                 var obj = currentInstance.AddComponent<ModelAvatarDriver>();
                 obj.modelPointMapper = modelPointMapper;
+                obj.saveSystem = saveSystem;
             }
 
             modelPointMapper.modelRoot = currentInstance;
