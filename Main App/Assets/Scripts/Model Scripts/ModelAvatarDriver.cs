@@ -81,13 +81,23 @@ public class ModelAvatarDriver : MonoBehaviour
         anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
         anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
 
+        Vector3 leftFootDir = modelPointMapper.hipL.transform.position - modelPointMapper.footL.transform.position.normalized;
+
+        Quaternion leftFootRot = Quaternion.LookRotation(Vector3.forward, leftFootDir);
+        leftFootRot *= Quaternion.Euler(0f, 180f, 0f);
+
         anim.SetIKPosition(AvatarIKGoal.LeftFoot, modelPointMapper.footL.transform.position);
-        anim.SetIKRotation(AvatarIKGoal.LeftFoot, modelPointMapper.footL.transform.rotation);
+        anim.SetIKRotation(AvatarIKGoal.LeftFoot, leftFootRot);
 
         anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
         anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
 
+        Vector3 rightFootDir = modelPointMapper.hipR.transform.position - modelPointMapper.footR.transform.position.normalized;
+        
+        Quaternion rightFootRot = Quaternion.LookRotation(Vector3.forward, rightFootDir);
+        rightFootRot *= Quaternion.Euler(0f, 180f, 0f);
+
         anim.SetIKPosition(AvatarIKGoal.RightFoot, modelPointMapper.footR.transform.position);
-        anim.SetIKRotation(AvatarIKGoal.RightFoot, modelPointMapper.footR.transform.rotation);
+        anim.SetIKRotation(AvatarIKGoal.RightFoot, rightFootRot);
     }
 }
