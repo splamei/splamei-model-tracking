@@ -112,6 +112,23 @@ public class ModelPointMapper : MonoBehaviour
             return;
         }
 
+        if (!GlobalData.getSettingsDataBool(saveSystem, GlobalData.settingsData.modelShowOnDisconnect))
+        {
+            if (latency >= 3000f && modelRoot.activeSelf)
+            {
+                modelRoot.SetActive(false);
+                return;
+            }
+            else if (latency < 3000f && !modelRoot.activeSelf)
+            {
+                modelRoot.SetActive(true);
+            }
+        }
+        else if (!modelRoot.activeSelf)
+        {
+            modelRoot.SetActive(true);
+        }
+
         var p = udpReceiver.getLatest();
 
         latency = (float)Math.Round((TimeSpan.FromTicks(DateTime.UtcNow.Ticks) - TimeSpan.FromTicks(p.timestampG)).TotalMilliseconds, 2);
