@@ -9186,6 +9186,7 @@ MonoBehaviour:
   quickMenuAnimation: {fileID: 410847864}
   quickMenuShow: {fileID: 7400000, guid: 2282eb9d4c6d0e7478d65f9c0461d8a0, type: 2}
   quickMenuHide: {fileID: 7400000, guid: ddffc0a29c1607a42ac1c47536f3dc27, type: 2}
+  aboutText: {fileID: 1546706417}
   uiButtons:
   - {fileID: 1084886106}
   - {fileID: 1999508889}

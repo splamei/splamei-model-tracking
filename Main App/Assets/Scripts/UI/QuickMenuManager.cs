@@ -25,6 +25,8 @@ public class QuickMenuManager : MonoBehaviour
     public AnimationClip quickMenuShow;
     public AnimationClip quickMenuHide;
 
+    public Text aboutText;
+
     public Button[] uiButtons = new Button[0];
 
     public GameObject quickMenuObj;
@@ -46,7 +48,7 @@ public class QuickMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        aboutText.text = $"Splamei Model Tracking\nVersion: {Application.version}";
     }
 
     // Update is called once per frame
