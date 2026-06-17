@@ -14,6 +14,7 @@
  */
 
 using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class PlayerData
@@ -29,6 +30,9 @@ public class PlayerData
     public bool modelShowOnDisconnect;
     public bool modelUseBridgeHeadRotation;
 
+    public Vector3 cameraPos;
+    public Vector3 cameraRot;
+
     public int port;
 
     public PlayerData (SaveSystem player)
@@ -43,6 +47,9 @@ public class PlayerData
 
         modelShowOnDisconnect = player.modelShowOnDisconnect;
         modelUseBridgeHeadRotation = player.modelUseBridgeHeadRotation;
+
+        cameraPos = player.cameraPos;
+        cameraRot = player.cameraRot;
 
         port = player.port;
     }

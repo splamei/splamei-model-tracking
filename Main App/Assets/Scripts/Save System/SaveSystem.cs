@@ -31,6 +31,9 @@ public class SaveSystem : MonoBehaviour
     public bool modelShowOnDisconnect;
     public bool modelUseBridgeHeadRotation;
 
+    public Vector3 cameraPos;
+    public Vector3 cameraRot;
+
     public int port;
 
     // Start is called before the first frame update
@@ -51,6 +54,9 @@ public class SaveSystem : MonoBehaviour
 
             modelShowOnDisconnect = player.modelShowOnDisconnect;
             modelUseBridgeHeadRotation = player.modelUseBridgeHeadRotation;
+
+            cameraPos = player.cameraPos;
+            cameraRot = player.cameraRot;
 
             port = player.port;
 

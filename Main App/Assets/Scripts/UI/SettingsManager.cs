@@ -23,6 +23,7 @@ public class SettingsManager : MonoBehaviour
 
     public bool changingValues = false;
 
+    [Header("Model Control")]
     public Animation animationObj;
     public AnimationClip showAni;
     public AnimationClip closeAni;
@@ -35,10 +36,17 @@ public class SettingsManager : MonoBehaviour
     public Toggle showModelOnDisconnect;
     public Toggle getHeadRotationBridge;
 
+    [Header("Visuals")]
+    public InputField cameraPosX, cameraPosY, cameraPosZ;
+    public InputField cameraRotX, cameraRotY, cameraRotZ;
+
+    [Header("Network")]
     public InputField portInput;
 
+    [Header("About")]
     public Text versionText;
 
+    [Header("Other")]
     public bool showing = false;
     public bool isClosing = false;
 
@@ -62,6 +70,14 @@ public class SettingsManager : MonoBehaviour
 
         portInput.text = GlobalData.getSettingsDataFloat(saveSystem, GlobalData.settingsData.port).ToString();
 
+        cameraPosX.text = saveSystem.cameraPos.x.ToString();
+        cameraPosY.text = saveSystem.cameraPos.y.ToString();
+        cameraPosZ.text = saveSystem.cameraPos.z.ToString();
+
+        cameraRotX.text = saveSystem.cameraRot.x.ToString();
+        cameraRotY.text = saveSystem.cameraRot.y.ToString();
+        cameraRotZ.text = saveSystem.cameraRot.z.ToString();
+
         changingValues = false;
     }
 
@@ -76,6 +92,32 @@ public class SettingsManager : MonoBehaviour
         GlobalData.setSettingsDataBool(saveSystem, GlobalData.settingsData.headRotationFromBridge, getHeadRotationBridge.isOn);
 
         GlobalData.setSettingsDataFloat(saveSystem, GlobalData.settingsData.port, float.Parse(!string.IsNullOrEmpty(portInput.text) ? portInput.text : "0"));
+
+        saveSystem.cameraPos = new Vector3(zeroIfNull(cameraPosX.text), zeroIfNull(cameraPosY.text), zeroIfNull(cameraPosZ.text));
+        saveSystem.cameraRot = new Vector3(zeroIfNull(cameraRotX.text), zeroIfNull(cameraRotY.text), zeroIfNull(cameraRotZ.text));
+    }
+
+    float zeroIfNull(string input, string defaultNum = "0")
+    {
+        try
+        {
+            string data = !string.IsNullOrEmpty(input) ? input : defaultNum;
+            return float.Parse(data);
+        }
+        catch
+        {
+            return float.Parse(defaultNum);
+        }
+    }
+
+    public void updateCameraPosRot()
+    {
+        Vector3 cameraPos = new Vector3(zeroIfNull(cameraPosX.text), zeroIfNull(cameraPosY.text), zeroIfNull(cameraPosZ.text) - 2f);
+        Vector3 cameraRot = new Vector3(zeroIfNull(cameraRotX.text), zeroIfNull(cameraRotY.text), zeroIfNull(cameraRotZ.text));
+
+        var camera = Camera.main.gameObject;
+        camera.transform.position = cameraPos;
+        camera.transform.rotation = Quaternion.Euler(cameraRot);
     }
 
     // Update is called once per frame

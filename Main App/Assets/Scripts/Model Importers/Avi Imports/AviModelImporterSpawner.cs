@@ -37,6 +37,13 @@ public class AviModelImporterSpawner : MonoBehaviour
     void Start()
     {
         triggerModelSwap(true, true);
+
+        Vector3 cameraPos = new Vector3(saveSystem.cameraPos.x, saveSystem.cameraPos.y, saveSystem.cameraPos.z - 2f);
+        Vector3 cameraRot = saveSystem.cameraRot;
+
+        var camera = Camera.main.gameObject;
+        camera.transform.position = cameraPos;
+        camera.transform.rotation = Quaternion.Euler(cameraRot);
     }
 
     // Update is called once per frame
