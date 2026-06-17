@@ -129,6 +129,12 @@ public class QuickMenuManager : MonoBehaviour
 
     public void calibrateModel()
     {
+        if (modelPointMapper.modelRoot == null)
+        {
+            notifyManager.show(null, "You need to import a model", "To start calibration, you need to import a model which you currently haven't done.\n\nPlease import a model first via cyan person button in the quick menu and try again.", "OK", "");
+            return;
+        }
+
         modelPointMapper.reBaseCalibrate();
         modelPointMapper.beginCalibration();
 
