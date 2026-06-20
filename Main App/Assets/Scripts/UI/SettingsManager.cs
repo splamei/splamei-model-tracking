@@ -12,7 +12,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
- 
+
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +24,15 @@ public class SettingsManager : MonoBehaviour
     public NotifyManager notify;
 
     public bool changingValues = false;
+
+    [Serializable]
+    public struct BackgroundEnumToStruct
+    {
+        public string name;
+        public SaveGlobal.backgroundType backgroundType;
+    }
+
+    public List<BackgroundEnumToStruct> backgroundEnumToStruct = new List<BackgroundEnumToStruct>();
 
     [Header("Model Control")]
     public Animation animationObj;
@@ -37,6 +48,7 @@ public class SettingsManager : MonoBehaviour
     public Toggle getHeadRotationBridge;
 
     [Header("Visuals")]
+    public Dropdown backgroundDropdown;
     public InputField cameraPosX, cameraPosY, cameraPosZ;
     public InputField cameraRotX, cameraRotY, cameraRotZ;
 
@@ -78,6 +90,22 @@ public class SettingsManager : MonoBehaviour
         cameraRotY.text = saveSystem.cameraRot.y.ToString();
         cameraRotZ.text = saveSystem.cameraRot.z.ToString();
 
+        for (int i = 0; i < backgroundDropdown.options.Count; i++)
+        {
+            string currentOption = backgroundDropdown.options[i].text;
+            for (int i2 = 0; i2 < backgroundEnumToStruct.Count; i2++)
+            {
+                if (backgroundEnumToStruct[i2].name == currentOption)
+                {
+                    if (backgroundEnumToStruct[i2].backgroundType == saveSystem.backgroundType)
+                    {
+                        backgroundDropdown.value = i;
+                        break;
+                    }
+                }
+            }
+        }
+
         changingValues = false;
     }
 
@@ -95,6 +123,18 @@ public class SettingsManager : MonoBehaviour
 
         saveSystem.cameraPos = new Vector3(zeroIfNull(cameraPosX.text), zeroIfNull(cameraPosY.text), zeroIfNull(cameraPosZ.text));
         saveSystem.cameraRot = new Vector3(zeroIfNull(cameraRotX.text), zeroIfNull(cameraRotY.text), zeroIfNull(cameraRotZ.text));
+
+        for (int i = 0; i < backgroundEnumToStruct.Count; i++)
+        {
+            string currentOption = backgroundEnumToStruct[i].name;
+            Debug.Log("1 - " + currentOption);
+            Debug.Log("2 - " + backgroundDropdown.options[backgroundDropdown.value].text);
+            if (currentOption == backgroundDropdown.options[backgroundDropdown.value].text)
+            {
+                saveSystem.backgroundType = backgroundEnumToStruct[i].backgroundType;
+                break;
+            }
+        }
     }
 
     float zeroIfNull(string input, string defaultNum = "0")

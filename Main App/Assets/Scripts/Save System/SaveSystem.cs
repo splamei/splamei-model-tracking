@@ -31,6 +31,7 @@ public class SaveSystem : MonoBehaviour
     public bool modelShowOnDisconnect;
     public bool modelUseBridgeHeadRotation;
 
+    public SaveGlobal.backgroundType backgroundType = SaveGlobal.backgroundType.skybox;
     public Vector3 cameraPos;
     public Vector3 cameraRot;
 
@@ -55,6 +56,7 @@ public class SaveSystem : MonoBehaviour
             modelShowOnDisconnect = player.modelShowOnDisconnect;
             modelUseBridgeHeadRotation = player.modelUseBridgeHeadRotation;
 
+            backgroundType = player.backgroundType;
             cameraPos = player.cameraPos;
             cameraRot = player.cameraRot;
 
