@@ -53,9 +53,13 @@ public class BackgroundManager : MonoBehaviour
             backgroundImageCanvas.SetActive(false);
             cameraObj.clearFlags = CameraClearFlags.SolidColor;
 
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR_WIN
             IntPtr hWnd = GetActiveWindow();
             MARGINS margins = new MARGINS { cxLeftWidth = -1 };
             DwmExtendFrameIntoClientArea(hWnd, ref margins);
+#else
+            Debug.LogWarning($"[BackgroundManager] Not changing to transparent background as we're not in the Win Player!");
+#endif
         }
     }
 
