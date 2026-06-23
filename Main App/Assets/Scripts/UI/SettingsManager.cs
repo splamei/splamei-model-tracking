@@ -127,8 +127,6 @@ public class SettingsManager : MonoBehaviour
         for (int i = 0; i < backgroundEnumToStruct.Count; i++)
         {
             string currentOption = backgroundEnumToStruct[i].name;
-            Debug.Log("1 - " + currentOption);
-            Debug.Log("2 - " + backgroundDropdown.options[backgroundDropdown.value].text);
             if (currentOption == backgroundDropdown.options[backgroundDropdown.value].text)
             {
                 saveSystem.backgroundType = backgroundEnumToStruct[i].backgroundType;
@@ -192,5 +190,27 @@ public class SettingsManager : MonoBehaviour
         animationObj.Play();
 
         isClosing = true;
+    }
+
+    public void backgroundDropdownChanged()
+    {
+        if (changingValues)
+        {
+            return;
+        }
+
+        /**SaveGlobal.backgroundType backgroundType = SaveGlobal.backgroundType.skybox;
+
+        for (int i = 0; i < backgroundEnumToStruct.Count; i++)
+        {
+            string currentOption = backgroundEnumToStruct[i].name;
+            if (currentOption == backgroundDropdown.options[backgroundDropdown.value].text)
+            {
+                backgroundType = backgroundEnumToStruct[i].backgroundType;
+                break;
+            }
+        }**/
+
+        notify.show(null, "Apply changes", "The changes you just made require you to reboot the app.\n\nPlease close the app and re-open it to apply the new background", "OK", "");
     }
 }
