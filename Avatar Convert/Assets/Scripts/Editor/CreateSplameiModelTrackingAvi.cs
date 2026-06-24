@@ -98,38 +98,38 @@ public class CreateSplameiModelTrackingAvi : EditorWindow
 
         if (selectedPrefab == null)
         {
-            validationMessage = "You need to add a prefab of your model from the project view!";
+            validationMessage = "You need to add a prefab of your model from the project view";
             return;
         }
 
         string path = AssetDatabase.GetAssetPath(selectedPrefab);
         if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
         {
-            validationMessage = "You didn't select a prefab! It needs to be a prefab ending with '.prefab'!";
+            validationMessage = "You didn't select a prefab! It needs to be a prefab ending with '.prefab'";
             return;
         }
 
         Animator animator = selectedPrefab.GetComponent<Animator>();
         if (animator == null)
         {
-            validationMessage = "The root of the model must have an animator!";
+            validationMessage = "The root of the model must have an animator assigned!";
             return;
         }
 
         if (animator.avatar == null)
         {
-            validationMessage = "The animator doesn't have an avatar assigned! It must have a humanoid avatar assigned!";
+            validationMessage = "The animator doesn't have an avatar assigned! It must have a humanoid avatar assigned";
             return;
         }
 
         if (!animator.avatar.isHuman)
         {
-            validationMessage = "The animator doesn't have a humanoid avatar assigned! It must be humanoid so it tracks!";
+            validationMessage = "The animator doesn't have a humanoid avatar assigned! It must be humanoid!";
             return;
         }
 
         isValidModel = true;
-        validationMessage = "This model is ready to go!";
+        validationMessage = "This model looks ready to go!";
     }
 
     private void buildModel()
