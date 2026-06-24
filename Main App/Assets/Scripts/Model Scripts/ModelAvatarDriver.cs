@@ -65,17 +65,41 @@ public class ModelAvatarDriver : MonoBehaviour
         if (anim == null || modelPointMapper == null) return;
 
         // Hands
+
         anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
         anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
 
+        Vector3 leftHandDir = modelPointMapper.handL.transform.position - modelPointMapper.shoulderL.transform.position.normalized;
+
+        Quaternion leftHandRot = Quaternion.LookRotation(Vector3.forward, leftHandDir);
+        leftHandRot *= Quaternion.Euler(-90f, 180f, -90f);
+
         anim.SetIKPosition(AvatarIKGoal.LeftHand, modelPointMapper.handL.transform.position);
-        anim.SetIKRotation(AvatarIKGoal.LeftHand, modelPointMapper.handL.transform.rotation);
+        anim.SetIKRotation(AvatarIKGoal.LeftHand, leftHandRot);
 
         anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
         anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
 
+        Vector3 rightHandDir = modelPointMapper.handR.transform.position - modelPointMapper.shoulderR.transform.position.normalized;
+
+        Quaternion rightHandRot = Quaternion.LookRotation(Vector3.forward, rightHandDir);
+        rightHandRot *= Quaternion.Euler(-90f, 0f, -90f);
+
         anim.SetIKPosition(AvatarIKGoal.RightHand, modelPointMapper.handR.transform.position);
-        anim.SetIKRotation(AvatarIKGoal.RightHand, modelPointMapper.handR.transform.rotation);
+        anim.SetIKRotation(AvatarIKGoal.RightHand, rightHandRot);
+
+
+        //anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+        //anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+
+        //anim.SetIKPosition(AvatarIKGoal.LeftHand, modelPointMapper.handL.transform.position);
+        //anim.SetIKRotation(AvatarIKGoal.LeftHand, modelPointMapper.handL.transform.rotation);
+
+        //anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+        //anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+
+        //anim.SetIKPosition(AvatarIKGoal.RightHand, modelPointMapper.handR.transform.position);
+        //anim.SetIKRotation(AvatarIKGoal.RightHand, modelPointMapper.handR.transform.rotation);
 
         // Feet
         anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
