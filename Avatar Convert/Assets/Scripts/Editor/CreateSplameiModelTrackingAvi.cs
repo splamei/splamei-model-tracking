@@ -28,16 +28,24 @@ public class CreateSplameiModelTrackingAvi : EditorWindow
     [MenuItem("Splamei Model Tracking/Build Avatar")]
     public static void showUiWindow()
     {
-        GetWindow<CreateSplameiModelTrackingAvi>("Splamei Model Tracking Builder");
+        var window = GetWindow<CreateSplameiModelTrackingAvi>("Splamei Model Tracking Builder");
+        Vector2 fixedSize = new Vector2(460, 700);
+        window.minSize = fixedSize;
+        window.maxSize = fixedSize;
     }
 
     private void OnGUI()
     {
         int ogSize = GUI.skin.label.fontSize;
         GUI.skin.label.fontSize = 30;
+
+        Texture2D image;
+        image = Resources.Load("Splamei/Model Tracking/Banner") as Texture2D;
+        GUILayout.Label(image, GUILayout.MaxWidth(450f), GUILayout.MaxHeight(200f));
+
         GUILayout.Label("Splamei Model Tracking Builder", GUILayout.Width(500), GUILayout.Height(75));
         GUI.skin.label.fontSize = ogSize;
-        GUILayout.Label("Avatar builder");
+        GUILayout.Label("Avatar builder version 1.0.0.0");
 
         EditorGUILayout.Space();
 
@@ -68,14 +76,16 @@ public class CreateSplameiModelTrackingAvi : EditorWindow
 
         GUI.enabled = true;
 
-        if (GUILayout.Button("Documentation"))
+        GUI.enabled = false;
+        if (GUILayout.Button("Documentation (Work in progress)"))
         {
-            Application.OpenURL("https://veemo.uk");
+            Application.OpenURL("https://docs.veemo.uk");
         }
 
+        GUI.enabled = true;
         if (GUILayout.Button("GitHub"))
         {
-            Application.OpenURL("https://veemo.uk");
+            Application.OpenURL("https://github.com/splamei/splamei-model-tracking");
         }
 
         GUILayout.Label("Made with <3 by Splamei");
