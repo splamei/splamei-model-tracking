@@ -36,6 +36,8 @@ public class AviModelImporterSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         triggerModelSwap(true, true);
 
         Vector3 cameraPos = new Vector3(saveSystem.cameraPos.x, saveSystem.cameraPos.y, saveSystem.cameraPos.z - 2f);
