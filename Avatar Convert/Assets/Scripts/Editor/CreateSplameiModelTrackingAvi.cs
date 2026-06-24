@@ -134,69 +134,77 @@ public class CreateSplameiModelTrackingAvi : EditorWindow
 
     private void buildModel()
     {
-        string assetPath = AssetDatabase.GetAssetPath(selectedPrefab);
-
-        string tempOutput = "Assets/TempBundles";
-        string finalOutput = EditorUtility.OpenFolderPanel("Pick the target folder", "", "");
-
-        if (string.IsNullOrEmpty(finalOutput))
+        try
         {
-            Debug.LogWarning("Not building avatar as the path was null or empty");
-            return;
+            string assetPath = AssetDatabase.GetAssetPath(selectedPrefab);
+
+            string tempOutput = "Assets/TempBundles";
+            string finalOutput = EditorUtility.OpenFolderPanel("Pick the target folder", "", "");
+
+            if (string.IsNullOrEmpty(finalOutput))
+            {
+                Debug.LogWarning("Not building avatar as the path was null or empty");
+                return;
+            }
+
+            if (!Directory.Exists(tempOutput))
+            {
+                Directory.CreateDirectory(tempOutput);
+            }
+
+            string bundleName = selectedPrefab.name.ToLower() + ".bundle";
+
+            // --- Building the bundle itself lol ---
+
+            AssetBundleBuild buildMap = new AssetBundleBuild
+            {
+                assetBundleName = bundleName,
+                assetNames = new[] { assetPath }
+            };
+
+            BuildPipeline.BuildAssetBundles(
+                tempOutput,
+                new [] { buildMap },
+                BuildAssetBundleOptions.None,
+                BuildTarget.StandaloneWindows64
+            );
+
+            // --- Create the manifest file ---
+
+            var manifest = new ModelBuildManifest
+            {
+                prefabName = selectedPrefab.name,
+                bundleName = bundleName,
+                version = "1.0",
+                type = "Humanoid"
+            };
+
+            string json = JsonUtility.ToJson(manifest, true);
+            string jsonPath = Path.Combine(tempOutput, "manifest.json");
+            File.WriteAllText(jsonPath, json);
+
+            // --- Path the stuff yeah ummmmm yeah ---
+
+            string finalFilePath = Path.Combine(finalOutput, selectedPrefab.name + ".splameimodeltrackavi");
+
+            if (File.Exists(finalFilePath)) { File.Delete(finalFilePath); }
+
+            ZipFile.CreateFromDirectory(tempOutput, finalFilePath);
+
+            // --- Clean up ---
+
+            Directory.Delete(tempOutput, true);
+
+            AssetDatabase.Refresh();
+            
+            Debug.Log($"Built the model {selectedPrefab.name} into {finalFilePath}!");
+            EditorUtility.RevealInFinder(finalFilePath);
         }
-
-        if (!Directory.Exists(tempOutput))
+        catch (Exception ex)
         {
-            Directory.CreateDirectory(tempOutput);
+            Debug.LogError("Failed to convert a model! - " + ex);
+            EditorUtility.DisplayDialog("Failed to convert the model", "Something went wrong when converting that model. Please try again and validate the model is valid.\n\nIf you see this message again, please report the issue on GitHub. The error is in the console", "OK");
         }
-
-        string bundleName = selectedPrefab.name.ToLower() + ".bundle";
-
-        // --- Building the bundle itself lol ---
-
-        AssetBundleBuild buildMap = new AssetBundleBuild
-        {
-            assetBundleName = bundleName,
-            assetNames = new[] { assetPath }
-        };
-
-        BuildPipeline.BuildAssetBundles(
-            tempOutput,
-            new [] { buildMap },
-            BuildAssetBundleOptions.None,
-            BuildTarget.StandaloneWindows64
-        );
-
-        // --- Create the manifest file ---
-
-        var manifest = new ModelBuildManifest
-        {
-            prefabName = selectedPrefab.name,
-            bundleName = bundleName,
-            version = "1.0",
-            type = "Humanoid"
-        };
-
-        string json = JsonUtility.ToJson(manifest, true);
-        string jsonPath = Path.Combine(tempOutput, "manifest.json");
-        File.WriteAllText(jsonPath, json);
-
-        // --- Path the stuff yeah ummmmm yeah ---
-
-        string finalFilePath = Path.Combine(finalOutput, selectedPrefab.name + ".splameimodeltrackavi");
-
-        if (File.Exists(finalFilePath)) { File.Delete(finalFilePath); }
-
-        ZipFile.CreateFromDirectory(tempOutput, finalFilePath);
-
-        // --- Clean up ---
-
-        Directory.Delete(tempOutput, true);
-
-        AssetDatabase.Refresh();
-        
-        Debug.Log($"Built the model {selectedPrefab.name} into {finalFilePath}!");
-        EditorUtility.RevealInFinder(finalFilePath);
     }
 }
 
