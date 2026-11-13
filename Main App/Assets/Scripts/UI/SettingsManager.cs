@@ -210,7 +210,6 @@ public class SettingsManager : MonoBehaviour
                 break;
             }
         }**/
-
         notify.show(null, "Apply changes", "The changes you just made require you to reboot the app.\n\nPlease close the app and re-open it to apply the new background", "OK", "");
     }
 }

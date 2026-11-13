@@ -131,7 +131,6 @@ public static class GlobalData
 
             return saveSystem.modelScale;
         }
-
         else if (settingsData == settingsData.smoothing)
         {
             if (saveSystem.modelSmoothing == 0)
@@ -141,7 +140,6 @@ public static class GlobalData
 
             return saveSystem.modelSmoothing;
         }
-
         else if (settingsData == settingsData.deadzone)
         {
             if (saveSystem.modelDeadzoneSize == 0)
@@ -151,7 +149,6 @@ public static class GlobalData
 
             return saveSystem.modelDeadzoneSize;
         }
-
         else if (settingsData == settingsData.maxMovement)
         {
             if (saveSystem.modelMaxMovement == 0)
@@ -161,7 +158,6 @@ public static class GlobalData
 
             return saveSystem.modelMaxMovement;
         }
-
         else if (settingsData == settingsData.port)
         {
             if (saveSystem.port == 0)
@@ -181,7 +177,6 @@ public static class GlobalData
         {
             return saveSystem.modelShowOnDisconnect;
         }
-
         else if (settingsData == settingsData.headRotationFromBridge)
         {
             return saveSystem.modelUseBridgeHeadRotation;
@@ -196,22 +191,18 @@ public static class GlobalData
         {
             saveSystem.modelScale = data;
         }
-
         else if (settingsData == settingsData.smoothing)
         {
             saveSystem.modelSmoothing = data;
         }
-
         else if (settingsData == settingsData.deadzone)
         {
             saveSystem.modelDeadzoneSize = data;
         }
-
         else if (settingsData == settingsData.maxMovement)
         {
             saveSystem.modelMaxMovement = data;
         }
-
         else if (settingsData == settingsData.port)
         {
             saveSystem.port = int.Parse(data.ToString());
@@ -224,14 +215,12 @@ public static class GlobalData
         {
             saveSystem.modelShowOnDisconnect = data;
         }
-
         else if (settingsData == settingsData.headRotationFromBridge)
         {
             saveSystem.modelUseBridgeHeadRotation = data;
         }
     }
 }
-
 
 internal static class ErrorTrigger
 {

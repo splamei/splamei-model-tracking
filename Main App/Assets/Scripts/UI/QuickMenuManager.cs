@@ -27,7 +27,7 @@ public class QuickMenuManager : MonoBehaviour
 
     public Text aboutText;
 
-    public Button[] uiButtons = new Button[0];
+    public Button[] uiButtons = Array.Empty<Button>();
 
     public GameObject quickMenuObj;
 
