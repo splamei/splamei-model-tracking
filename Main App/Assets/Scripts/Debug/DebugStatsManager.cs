@@ -57,7 +57,7 @@ public class DebugStatsManager : MonoBehaviour
         {
             if (modelPointMapper.latency >= 0.000001f)
             {
-                averageLatency = (averageLatency * averageLatencyCount + modelPointMapper.latency) / (averageLatencyCount + 1);
+                averageLatency = ((averageLatency * averageLatencyCount) + modelPointMapper.latency) / (averageLatencyCount + 1);
                 averageLatencyCount++;
             }
 

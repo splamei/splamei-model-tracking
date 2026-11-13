@@ -218,9 +218,9 @@ public class UdpReceiver : MonoBehaviour
     {
         return new Vec3
         {
-            x = a.x + (b.x - a.x) * t,
-            y = a.y + (b.y - a.y) * t,
-            z = a.z + (b.z - a.z) * t
+            x = a.x + ((b.x - a.x) * t),
+            y = a.y + ((b.y - a.y) * t),
+            z = a.z + ((b.z - a.z) * t)
         };
     }
 

@@ -146,7 +146,7 @@ public class ModelPointMapper : MonoBehaviour
 
         Vector3 spineL = toUnityPos(p.spineBase);
         Vector3 neckL  = toUnityPos(p.neck);
-        Vector3 headPos = neckL + (neckL - spineL).normalized * headOffset;
+        Vector3 headPos = neckL + ((neckL - spineL).normalized * headOffset);
         head.transform.position = Vector3.Lerp(
             head.transform.position,
             headPos + rootOffset,
@@ -200,7 +200,7 @@ public class ModelPointMapper : MonoBehaviour
         Vector3 hip = toUnityPos(p.spineBase);
 
         Vector3 shoulderDir = (shoulderR.transform.position - shoulderL.transform.position).normalized;
-        Vector3 hipForward = (hip - (toUnityPos(p.hipLeft) + toUnityPos(p.hipRight)) * 0.5f).normalized;
+        Vector3 hipForward = (hip - ((toUnityPos(p.hipLeft) + toUnityPos(p.hipRight)) * 0.5f)).normalized;
 
         forward = Vector3.Slerp(hipForward, Vector3.Cross(shoulderDir, Vector3.up), 0.7f);
 
@@ -254,7 +254,7 @@ public class ModelPointMapper : MonoBehaviour
 
         if (movementSize.magnitude > maxMovement)
         {
-            target = currentPos + movementSize.normalized * maxMovement;
+            target = currentPos + (movementSize.normalized * maxMovement);
         }
 
         Vector3 vel = velocities[obj];
@@ -449,7 +449,6 @@ public class ModelPointMapper : MonoBehaviour
             footLOffset = (trackerFootL - modelFootL) + rootOffset;
             footROffset = (trackerFootR - modelFootR) + rootOffset;
         }**/
-
         modelImporterSpawner.triggerModelSwap(true, false);
     }
 

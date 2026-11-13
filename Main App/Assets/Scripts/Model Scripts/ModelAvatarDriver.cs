@@ -88,7 +88,6 @@ public class ModelAvatarDriver : MonoBehaviour
         anim.SetIKPosition(AvatarIKGoal.RightHand, modelPointMapper.handR.transform.position);
         anim.SetIKRotation(AvatarIKGoal.RightHand, rightHandRot);
 
-
         //anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
         //anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
 

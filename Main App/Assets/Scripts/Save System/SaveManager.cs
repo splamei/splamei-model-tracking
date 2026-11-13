@@ -39,7 +39,6 @@ public static class SaveManager
             {
                 fs.Write(plainBytes, 0, plainBytes.Length);
             }
-
         }
         catch (Exception ex)
         {
